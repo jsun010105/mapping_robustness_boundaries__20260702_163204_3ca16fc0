@@ -1,0 +1,5 @@
+,jailbreak,persona,encoding,bias
+jailbreak,1.0,0.7,-0.1,0.8
+persona,0.7,1.0,-0.1,0.3
+encoding,-0.1,-0.1,1.0,0.0
+bias,0.8,0.3,0.0,1.0

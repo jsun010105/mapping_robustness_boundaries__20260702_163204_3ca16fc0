@@ -1,0 +1,15 @@
+Resource finding phase completed successfully.
+Timestamp: 2026-07-02T16:54:50+00:00
+Papers downloaded: 31
+Datasets staged: 6 groups (~33MB) + on-demand list documented
+Repositories cloned: 6
+
+Deliverables:
+- papers/ (31 PDFs) + papers/README.md + papers/catalog.json
+- datasets/ (emergent_misalignment, refusal_benchmarks, advbench, strongreject, alignment_faking_vlaf) + README + .gitignore
+- code/ (emergent-misalignment, model-organisms-for-EM, refusal_direction, llm-attacks, strongreject, VLAF) + README.md
+- literature_review.md (full synthesis + experiment design recommendations)
+- resources.md (catalog)
+
+Environment: isolated .venv (uv), pyproject.toml with package=false.
+Primary testbed identified: Emergent Misalignment (matched treatment/null controls + multiple intensity dials).

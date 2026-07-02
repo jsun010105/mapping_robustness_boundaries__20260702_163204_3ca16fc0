@@ -1,0 +1,7 @@
+# Exclude all data files (can be large) from git
+*
+
+# But keep documentation and small structural files
+!.gitignore
+!README.md
+!**/README.md

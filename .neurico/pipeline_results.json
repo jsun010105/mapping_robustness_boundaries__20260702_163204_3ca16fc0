@@ -1,0 +1,27 @@
+{
+  "success": true,
+  "stages": {
+    "resource_finder": {
+      "success": true,
+      "completion_marker": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/.resource_finder_complete",
+      "outputs": {
+        "literature_review": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/literature_review.md",
+        "resources_catalog": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/resources.md",
+        "papers_dir": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/papers",
+        "datasets_dir": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/datasets",
+        "code_dir": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/code"
+      },
+      "log_file": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/logs/resource_finder_claude.log",
+      "transcript_file": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/logs/resource_finder_claude_transcript.jsonl",
+      "elapsed_time": 1375.5961923599243
+    },
+    "experiment_runner": {
+      "success": true,
+      "return_code": 0,
+      "elapsed_time": 7704.91500711441,
+      "log_file": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/logs/execution_claude.log",
+      "transcript_file": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0/logs/execution_claude_transcript.jsonl"
+    }
+  },
+  "work_dir": "/workspaces/mapping_robustness_boundaries__20260702_163204_3ca16fc0"
+}

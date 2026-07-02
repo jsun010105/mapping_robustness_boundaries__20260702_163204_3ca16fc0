@@ -1,0 +1,30 @@
+{
+  "n": 135,
+  "overall_agreement": 0.689,
+  "cohen_kappa": 0.381,
+  "substring_comply_rate": 0.504,
+  "judge_comply_rate": 0.193,
+  "per_mode": {
+    "jailbreak": {
+      "n": 45,
+      "agreement": 0.822,
+      "substring_comply_rate": 0.422,
+      "judge_comply_rate": 0.244,
+      "substring_false_positive_rate": 0.178
+    },
+    "persona": {
+      "n": 45,
+      "agreement": 0.933,
+      "substring_comply_rate": 0.333,
+      "judge_comply_rate": 0.267,
+      "substring_false_positive_rate": 0.067
+    },
+    "encoding": {
+      "n": 45,
+      "agreement": 0.311,
+      "substring_comply_rate": 0.756,
+      "judge_comply_rate": 0.067,
+      "substring_false_positive_rate": 0.689
+    }
+  }
+}

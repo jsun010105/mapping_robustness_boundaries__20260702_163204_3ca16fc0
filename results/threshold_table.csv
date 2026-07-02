@@ -1,0 +1,6 @@
+,jailbreak,persona,encoding,bias,align_method
+qwen2.5-7b,3,-,1,2,AFT
+llama3.1-8b,-,-,2,2,APO
+mistral-nemo,3,3,-,2,AFT
+gemma2-27b,4,2,1,2,APO
+gpt-4o-mini,-,-,1,2,deliberative

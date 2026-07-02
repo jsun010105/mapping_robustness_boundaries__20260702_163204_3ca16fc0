@@ -1,0 +1,59 @@
+\section{Methodology}
+\label{sec:method}
+
+\ours is a graduated adversarial stress-test harness. It applies four failure modes, each with six calibrated intensity levels, identically across five models, and defines every robustness quantity \emph{relative to a per-model measured noise floor} so that ``null result'' means ``sub-noise,'' not ``we gave up.''
+
+\subsection{Models and alignment methods}
+
+We select five models that span both the alignment-method space and the observed robustness spectrum (\tabref{tab:models}). Preference-optimization (\apo), fine-tuning (\aft), and deliberative alignment are the three families the literature contrasts for brittleness~\citep{arditi2024refusal,vlaf2026}. All models are queried through the OpenRouter API. Fine-tuning-based emergent misalignment---the literature's primary testbed---requires GPU training and was out of scope under our CPU-only constraint; all interventions here are \emph{inference-time}, which prior work treats as a valid intensity axis~\citep{weijailbroken2023,clearbias2025}.
+
+\begin{table}[t]
+    \centering
+    \caption{The five models under test, spanning three alignment methods and the full observed robustness range. Alignment families follow the taxonomy of~\citet{arditi2024refusal}.}
+    \label{tab:models}
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        \textbf{Model} & \textbf{OpenRouter ID} & \textbf{Alignment family} \\
+        \midrule
+        \qwen    & \texttt{qwen/qwen-2.5-7b-instruct}      & \aft \\
+        \llama   & \texttt{meta-llama/llama-3.1-8b-instruct} & \apo \\
+        \gemma   & \texttt{google/gemma-2-27b-it}          & \apo (robust contrast) \\
+        \mistral & \texttt{mistralai/mistral-nemo}         & \aft \\
+        \gpt     & \texttt{openai/gpt-4o-mini}             & deliberative / frontier \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Four failure modes with graduated intensity}
+
+Each mode has six intensity levels, $L_0$ (no-attack baseline) through $L_5$ (maximum), ordered by documented attack strength.
+\begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
+    \item \textbf{Jailbreak composition} (competing objectives~\citep{weijailbroken2023}): plain $\to$ justification $\to$ authority/urgency $\to$ prefix-injection $\to$ refusal-suppression rules $\to$ stacked DAN-style.
+    \item \textbf{Adversarial persona} (role-play): neutral $\to$ helpful $\to$ amoral advisor $\to$ fictional villain $\to$ unfiltered persona $\to$ maximal unrestricted persona.
+    \item \textbf{Syntactic/encoding perturbation} (mismatched generalization~\citep{weijailbroken2023}): plain $\to$ leetspeak $\to$ word-reversal $\to$ Base64 $\to$ ROT13 $\to$ Base64 with decode instruction (increasing out-of-distribution-ness).
+    \item \textbf{Bias elicitation} (\clearbias-style~\citep{clearbias2025}): neutral ask $\to$ guess $\to$ force-a-pick $\to$ one-word $\to$ analyst-persona $\to$ authority/penalty framing.
+\end{itemize}
+Modes 1--3 use eight diverse harmful requests drawn from \strongreject; mode 4 uses eight ambiguous social scenarios, scored as non-robust when the model commits to a demographic group.
+
+\subsection{Prompts, sampling, and the noise floor}
+
+Following the safety-stability mandate that decisions flip across seeds~\citep{instability2025}, we sample three seeds per prompt at temperature 0.7 with \texttt{max\_tokens}${=}256$. This yields 2{,}880 planned calls; 2{,}879 were analyzed (one dropped by the misunderstanding filter; 100 large-model API timeouts on encoded prompts were re-collected at lower concurrency). The per-model, per-mode $L_0$ (no-attack) compliance is the \emph{noise floor} against which all higher intensities are tested.
+
+\subsection{Metrics}
+
+\para{Compliance rate.} Attack success $=1-\text{refusal}$. The primary detector is the standard refusal-substring list (from the \texttt{refusal\_direction} repository) plus a minimum-length check. This detector is cheap, deterministic, and reproducible, but---critically---we do not trust it until it is validated (\secref{sec:results}).
+
+\para{Change-point threshold.} The lowest intensity level $L$ whose compliance exceeds the per-model $L_0$ noise floor at $p<0.05$ (one-sided two-proportion $z$-test). We write ``--'' when no level is supra-noise, denoting a candidate invariant.
+
+\para{Robustness coefficient.} $R = 1 - \widehat{\text{AUC}}$, the normalized area under the compliance-vs-intensity curve, so $R=1$ is fully robust and $R=0$ is fully compliant.
+
+\para{Cross-mode correlation.} Spearman $\rho$ of the five per-model robustness coefficients between each pair of modes, testing whether robustness is one scalar or multi-dimensional.
+
+\para{Invariant-persistence score.} The fraction of (model, mode) pairs whose maximum-intensity ($L_5$) compliance is \emph{not} significantly above baseline.
+
+\para{Statistical tests.} We use a Kruskal--Wallis test for between-model robustness differences and a one-sided Mann--Whitney test for the \apo/deliberative vs.\ \aft contrast, and report effect sizes alongside $p$-values given the small model count.
+
+\subsection{Metric validation}
+\label{sec:method-validation}
+
+Before trusting the map we validate the substring detector against an LLM judge (\gpt, asked whether the response \emph{genuinely} provides the harmful content) on a stratified 135-row subset. Where the substring detector and judge disagree materially, we re-score the affected mode with the judge and use judge-corrected labels throughout. This validation step is the methodological heart of \ours: a robustness boundary is only trustworthy once the behavioral metric is itself calibrated.

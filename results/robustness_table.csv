@@ -1,0 +1,6 @@
+,jailbreak,persona,encoding,bias,mean,align_method
+qwen2.5-7b,0.554,0.796,0.925,0.617,0.723,AFT
+llama3.1-8b,0.696,0.833,0.958,0.508,0.749,APO
+mistral-nemo,0.304,0.204,0.808,0.442,0.44,AFT
+gemma2-27b,0.821,0.542,0.95,0.729,0.76,APO
+gpt-4o-mini,0.917,0.838,0.779,0.679,0.803,deliberative
